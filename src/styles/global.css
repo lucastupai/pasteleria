@@ -1,0 +1,171 @@
+:root { --brand: #b22222; }
+body { background: #fff; }
+.navbar-brand { font-weight: 700; }
+.card img { object-fit: cover; }
+@media (max-width: 576px){
+  h1 { font-size: 1.5rem; }
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Pacifico&display=swap');
+
+:root{
+  /* Paleta pedida por la forma C */
+  --bg-cream: #FFF5E1;        /* fondo principal */
+  --accent-pink: #FFC0CB;     /* rosa suave */
+  --accent-choco: #8B4513;    /* chocolate */
+  --text-main: #5D4037;       /* marrón oscuro */
+  --text-muted: #B0BEC5;      /* gris claro */
+
+  /* Sombra y radios suaves */
+  --radius: 1rem;
+  --shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+
+/* Tipografías globalesaa */
+html, body {
+  font-family: "Lato", system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text-main);
+  background: var(--bg-cream);
+}
+
+/* Encabezados con Pacifico para dar “marca” */
+h1, .font-display { 
+  font-family: "Pacifico", cursive; 
+  letter-spacing: .3px;
+}
+
+/* --------------------------- */
+/* Overrides rápidos Bootstrap */
+/* --------------------------- */
+
+.navbar {
+  background: #fff;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+.navbar-brand {
+  font-family: "Pacifico", cursive;
+  color: var(--accent-choco) !important;
+  font-size: 1.6rem;
+}
+
+.nav-link {
+  color: var(--text-main) !important;
+  opacity: .8;
+}
+.nav-link.active, .nav-link:hover { opacity: 1; color: var(--accent-choco) !important; }
+
+/* Botones principales: chocolate + hover rosa */
+.btn-primary, .btn-success, .btn-dark, .btn-outline-dark {
+  border-radius: calc(var(--radius) - .25rem);
+}
+.btn-primary {
+  background: var(--accent-choco);
+  border-color: var(--accent-choco);
+}
+.btn-primary:hover {
+  background: #6f3610;
+  border-color: #6f3610;
+}
+
+/* Botón del carrito visual */
+.btn-outline-dark {
+  color: var(--accent-choco);
+  border-color: var(--accent-choco);
+  background: transparent;
+}
+.btn-outline-dark:hover {
+  color: #fff;
+  background: var(--accent-choco);
+  border-color: var(--accent-choco);
+}
+
+/* Badges de categoría */
+.badge-chip{
+  display:inline-flex; align-items:center; gap:.4rem;
+  padding:.35rem .7rem;
+  border-radius:999px;
+  background: var(--accent-pink);
+  color:#5b2f33; /* rosa + contraste */
+  font-weight:600;
+}
+
+/* Cards de producto */
+.card {
+  border: none;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  background: #fff;
+}
+.card img { 
+  width: 100%; height: 190px; object-fit: cover; 
+}
+.card .card-title { 
+  font-weight: 700; 
+}
+.card .price {
+  color: var(--accent-choco);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+/* Grilla más aireada */
+.row.g-3 > [class*="col"] { display: flex; }
+.card.h-100 { display: flex; flex-direction: column; }
+.card .card-body { display: flex; flex-direction: column; gap:.35rem; }
+.card .card-footer { background: transparent; border:0; padding-top: 0; }
+
+/* Sección hero (si la usas en Home) */
+.hero {
+  background: linear-gradient(180deg, rgba(255,192,203,.2), rgba(255,245,225,0));
+  border-radius: var(--radius);
+  padding: 2rem;
+  box-shadow: var(--shadow);
+}
+.hero .hero-title {
+  font-family: "Pacifico", cursive;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  color: var(--accent-choco);
+  margin: 0 0 .5rem 0;
+}
+.hero p { color: #6b4d44; }
+
+/* Checkout: caja de totales más notoria */
+.alert-info, .alert-success {
+  border: 0;
+  border-radius: calc(var(--radius) - .25rem);
+  box-shadow: 0 10px 18px rgba(0,0,0,.05);
+}
+.alert-success {
+  background: #eaf7ef;
+  color: #255f37;
+}
+.alert-info {
+  background: #eef6ff;
+  color: #134e8e;
+}
+
+/* Formularios: feedback */
+.form-control.is-invalid, .form-select.is-invalid {
+  border-color: #dc3545;
+  box-shadow: 0 0 0 .2rem rgba(220,53,69,.1);
+}
+
+/* Footer (si lo agregas) */
+.site-footer {
+  border-top: 1px solid rgba(0,0,0,.06);
+  padding: 1.5rem 0;
+  color: var(--text-muted);
+}
+
+/* Utilidades */
+.text-muted-2 { color: var(--text-muted) !important; }
+.rounded-2xl { border-radius: var(--radius) !important; }
+.shadow-lg-soft { box-shadow: var(--shadow) !important; }
+
+/* Responsive tweaks */
+@media (max-width: 576px){
+  .navbar-brand { font-size: 1.35rem; }
+  .card img { height: 160px; }
+}
