@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+
 import { CartProvider } from './context/CartContext.jsx'
 import AppRouter from './router/AppRouter.jsx'
 import Navbar from './components/Navbar.jsx'
@@ -12,4 +13,11 @@ export default function App() {
       </main>
     </CartProvider>
   )
+  useEffect(() => {
+  const usuario = JSON.parse(localStorage.getItem('usuarioActual'))
+  if (usuario) {
+    console.log("Usuario activo:", usuario.nombre)
+  }
+}, [])
+
 }
