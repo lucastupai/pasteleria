@@ -1,0 +1,6 @@
+{
+  "presets": [
+    ["@babel/preset-env", {"targets": {"chrome": "114"}}],
+    "@babel/preset-react"
+  ]
+}
