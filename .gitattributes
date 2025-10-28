@@ -1,0 +1,7 @@
+# desde la carpeta del proyecto
+git status
+git branch -M main
+git remote -v   # debe mostrar https://github.com/lucastupai/pasteleria.git
+
+# sube sobreescribiendo el remoto
+git push -u origin main --force
