@@ -4,47 +4,54 @@ export default function Login() {
   const [form, setForm] = useState({ email: '', password: '' });
   const [touched, setTouched] = useState(false);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const isEmailValid = (v) => /\S+@\S+\.\S+/.test(v);
-  const isPwdValid   = (v) => v.length >= 6;
+  const isPwdValid = (v) => v.length >= 6;
 
-  function getUsuarios() {
-    try {
-      const raw = localStorage.getItem('usuarios');
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
-    }
-  }
+  const API_BASE = 'http://54.226.254.75:8082';
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setTouched(true);
     setError('');
 
     if (!isEmailValid(form.email) || !isPwdValid(form.password)) return;
 
-    const email = form.email.trim().toLowerCase();
-    const usuarios = getUsuarios();
-    const usuario = usuarios.find(
-      (u) =>
-        (u.email || '').toLowerCase() === email &&
-        (u.password || '') === form.password
-    );
-
-    if (!usuario) {
-      setError('Correo o contraseña incorrectos');
-      return;
-    }
+    setLoading(true);
 
     try {
-      localStorage.setItem('usuarioActual', JSON.stringify(usuario));
-    } catch {}
+      const resp = await fetch(`${API_BASE}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: form.email, // el backend usa "username"
+          password: form.password,
+        }),
+      });
 
-    if (typeof window !== 'undefined') {
-      window.alert && window.alert(`Bienvenida/o, ${usuario.nombre ?? usuario.email} ✅`);
-      window.location && (window.location.href = '/');
+      if (!resp.ok) {
+        setError('Correo o contraseña incorrectos');
+        setLoading(false);
+        return;
+      }
+
+      const data = await resp.json(); 
+      // data = { token, username, rol }
+
+      // Guardamos la sesión
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username);
+      localStorage.setItem('rol', data.rol);
+
+      alert(`Bienvenido/a, ${data.username} (${data.rol})`);
+
+      window.location.href = '/';
+    } catch (err) {
+      setError('Error al conectar con el servidor');
     }
+
+    setLoading(false);
   }
 
   const onChange = (field) => (e) => {
@@ -87,7 +94,9 @@ export default function Login() {
           </div>
         )}
 
-        <button type="submit" className="btn btn-primary">Ingresar</button>
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? 'Cargando...' : 'Ingresar'}
+        </button>
       </form>
     </section>
   );
