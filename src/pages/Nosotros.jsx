@@ -39,6 +39,20 @@ export default function Nosotros() {
         De esta manera, Pastelería 1000 Sabores continúa consolidándose como un ícono de la repostería
         en Chile, uniendo tradición y tecnología para seguir endulzando generaciones.
       </p>
+            {/* Banner vintage */}
+      <div className="text-center mt-4">
+        <img
+          src="https://static.vecteezy.com/system/resources/previews/009/926/240/large_2x/banner-with-cooking-kneading-dough-beating-breaking-eggs-seasoning-graphics-free-vector.jpg"
+          alt="Pastelería 1000 Sabores - Banner vintage"
+          className="img-fluid rounded-3 shadow"
+          style={{
+            maxHeight: '350px',
+            objectFit: 'cover',
+            width: '100%',
+          }}
+        />
+      </div>
+
     </section>
   );
 }
