@@ -10,7 +10,7 @@ export default function Navbar() {
   const rol = localStorage.getItem('rol');
 
   function handleLogout() {
-    if (confirm("¿Deseas cerrar sesión?")) {
+    if (confirm('¿Deseas cerrar sesión?')) {
       localStorage.removeItem('usuarioActual');
       localStorage.removeItem('username');
       localStorage.removeItem('rol');
@@ -22,31 +22,51 @@ export default function Navbar() {
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light px-3">
-
       <Link className="navbar-brand" to="/">
         Pastelería
       </Link>
 
       <div className="collapse navbar-collapse">
-
         <ul className="navbar-nav me-auto">
           <li className="nav-item">
-            <NavLink className="nav-link" to="/">Inicio</NavLink>
+            <NavLink className="nav-link" to="/">
+              Inicio
+            </NavLink>
           </li>
 
           <li className="nav-item">
-            <NavLink className="nav-link" to="/productos">Productos</NavLink>
+            <NavLink className="nav-link" to="/nosotros">
+              Nosotros
+            </NavLink>
+          </li>
+
+          <li className="nav-item">
+            <NavLink className="nav-link" to="/productos">
+              Productos
+            </NavLink>
           </li>
 
           {!usuario && (
             <>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/registro">Registro</NavLink>
+                <NavLink className="nav-link" to="/registro">
+                  Registro
+                </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink className="nav-link" to="/login">Login</NavLink>
+                <NavLink className="nav-link" to="/login">
+                  Login
+                </NavLink>
               </li>
             </>
+          )}
+
+          {usuario && (
+            <li className="nav-item d-flex align-items-center">
+              <span className="navbar-text me-2">
+                Hola, <strong>{username || usuario.nombre}</strong>
+              </span>
+            </li>
           )}
 
           {usuario && (
@@ -59,7 +79,6 @@ export default function Navbar() {
         </ul>
 
         <CartWidget />
-
       </div>
     </nav>
   );
