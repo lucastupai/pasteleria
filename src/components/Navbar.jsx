@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
 import CartWidget from './CartWidget.jsx';
 
 export default function Navbar() {
   const navigate = useNavigate();
+  const [menuAbierto, setMenuAbierto] = useState(false);
 
   const usuario = JSON.parse(localStorage.getItem('usuarioActual') || 'null');
   const username = localStorage.getItem('username');
-  const rol = localStorage.getItem('rol');
 
   function handleLogout() {
     if (confirm('¿Deseas cerrar sesión?')) {
@@ -15,71 +15,137 @@ export default function Navbar() {
       localStorage.removeItem('username');
       localStorage.removeItem('rol');
       localStorage.removeItem('token');
-
       navigate('/');
     }
   }
 
+  function cerrarMenu() {
+    setMenuAbierto(false);
+  }
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light px-3">
-      <Link className="navbar-brand" to="/">
-        Pastelería
-      </Link>
+    <>
+      {/* NAVBAR SUPERIOR */}
+      <nav className="navbar navbar-expand-lg navbar-light bg-light px-3">
+        <Link className="navbar-brand fw-bold" to="/">
+          Pastelería
+        </Link>
 
-      <div className="collapse navbar-collapse">
-        <ul className="navbar-nav me-auto">
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/">
-              Inicio
-            </NavLink>
-          </li>
+        {/* Botón hamburguesa para menú móvil */}
+        <button
+          className="navbar-toggler"
+          type="button"
+          onClick={() => setMenuAbierto(!menuAbierto)}
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
 
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/nosotros">
-              Nosotros
-            </NavLink>
-          </li>
+        {/* Menú de escritorio */}
+        <div className="collapse navbar-collapse">
+          <ul className="navbar-nav me-auto">
 
-          <li className="nav-item">
-            <NavLink className="nav-link" to="/productos">
-              Productos
-            </NavLink>
-          </li>
-
-          {!usuario && (
-            <>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/registro">
-                  Registro
-                </NavLink>
-              </li>
-              <li className="nav-item">
-                <NavLink className="nav-link" to="/login">
-                  Login
-                </NavLink>
-              </li>
-            </>
-          )}
-
-          {usuario && (
-            <li className="nav-item d-flex align-items-center">
-              <span className="navbar-text me-2">
-                Hola, <strong>{username || usuario.nombre}</strong>
-              </span>
-            </li>
-          )}
-
-          {usuario && (
             <li className="nav-item">
-              <button className="btn btn-danger" onClick={handleLogout}>
-                Cerrar sesión
-              </button>
+              <NavLink className="nav-link" to="/" onClick={cerrarMenu}>
+                Inicio
+              </NavLink>
             </li>
-          )}
-        </ul>
 
-        <CartWidget />
-      </div>
-    </nav>
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/nosotros" onClick={cerrarMenu}>
+                Nosotros
+              </NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/productos" onClick={cerrarMenu}>
+                Productos
+              </NavLink>
+            </li>
+
+            {!usuario && (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/registro" onClick={cerrarMenu}>
+                    Registro
+                  </NavLink>
+                </li>
+
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/login" onClick={cerrarMenu}>
+                    Login
+                  </NavLink>
+                </li>
+              </>
+            )}
+
+            {usuario && (
+              <>
+                <li className="nav-item d-flex align-items-center">
+                  <span className="navbar-text me-2">
+                    Hola, <strong>{username || usuario.nombre}</strong>
+                  </span>
+                </li>
+
+                <li className="nav-item">
+                  <button className="btn btn-danger" onClick={handleLogout}>
+                    Cerrar sesión
+                  </button>
+                </li>
+              </>
+            )}
+          </ul>
+
+          <CartWidget />
+        </div>
+      </nav>
+
+      {/* MENÚ MÓVIL DESPLEGABLE */}
+      {menuAbierto && (
+        <div className="navbar-mobile bg-light p-3 shadow" style={{ position: 'absolute', width: '100%', zIndex: 1000 }}>
+          <ul className="nav flex-column">
+
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/" onClick={cerrarMenu}>Inicio</NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/nosotros" onClick={cerrarMenu}>Nosotros</NavLink>
+            </li>
+
+            <li className="nav-item">
+              <NavLink className="nav-link" to="/productos" onClick={cerrarMenu}>Productos</NavLink>
+            </li>
+
+            {!usuario && (
+              <>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/registro" onClick={cerrarMenu}>Registro</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink className="nav-link" to="/login" onClick={cerrarMenu}>Login</NavLink>
+                </li>
+              </>
+            )}
+
+            {usuario && (
+              <>
+                <li className="nav-item">
+                  <span className="nav-link">Hola, <strong>{username}</strong></span>
+                </li>
+                <li className="nav-item">
+                  <button className="btn btn-danger w-100" onClick={() => { cerrarMenu(); handleLogout(); }}>
+                    Cerrar sesión
+                  </button>
+                </li>
+              </>
+            )}
+
+            <li className="nav-item mt-2">
+              <CartWidget />
+            </li>
+          </ul>
+        </div>
+      )}
+    </>
   );
 }
