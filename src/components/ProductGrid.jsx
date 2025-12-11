@@ -7,7 +7,7 @@ export default function ProductGrid() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("http://54.226.254.75:8082/api/productos")
+    fetch("http://3.90.161.208:8082/api/productos")
       .then(res => res.json())
       .then(data => {
         setProductos(data);

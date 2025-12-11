@@ -1,6 +1,6 @@
 // src/services/authService.js
 
-const API_BASE = 'http://54.226.254.75:8082';
+const API_BASE = 'http://3.90.161.208:8082';
 
 export async function login(username, password) {
   const resp = await fetch(`${API_BASE}/api/auth/login`, {
