@@ -1,54 +1,48 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 export default function Login() {
-  const [form, setForm] = useState({ email: "", password: "" });
+  const [form, setForm] = useState({ email: '', password: '' });
   const [touched, setTouched] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const isEmailValid = (v) => /\S+@\S+\.\S+/.test(v);
   const isPwdValid = (v) => v.length >= 6;
 
-  // ✅ Usar el proxy de Nginx (/api -> backend)
-  // ❌ NO usar http://13.218.231.171:8082 (CORS)
-  const API_BASE = "";
-
   async function handleSubmit(e) {
     e.preventDefault();
     setTouched(true);
-    setError("");
+    setError('');
 
     if (!isEmailValid(form.email) || !isPwdValid(form.password)) return;
 
     setLoading(true);
 
     try {
-      const resp = await fetch(`${API_BASE}/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+      const resp = await fetch(`/api/auth/login`, { // ✅ sin CORS
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: form.email, // el backend usa "username"
+          username: form.email,
           password: form.password,
         }),
       });
 
       if (!resp.ok) {
-        setError("Correo o contraseña incorrectos");
+        setError('Correo o contraseña incorrectos');
         setLoading(false);
         return;
       }
 
       const data = await resp.json();
-      // data = { token, username, rol }
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("username", data.username);
-      localStorage.setItem("rol", data.rol);
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('username', data.username);
+      localStorage.setItem('rol', data.rol);
 
-      alert(`Bienvenido/a, ${data.username} (${data.rol})`);
-      window.location.href = "/";
+      window.location.href = '/';
     } catch (err) {
-      setError("Error al conectar con el servidor");
+      setError('Error al conectar con el servidor');
     }
 
     setLoading(false);
@@ -56,7 +50,7 @@ export default function Login() {
 
   const onChange = (field) => (e) => {
     setForm({ ...form, [field]: e.target.value });
-    if (error) setError("");
+    if (error) setError('');
   };
 
   return (
@@ -68,12 +62,9 @@ export default function Login() {
           <label className="form-label">Email</label>
           <input
             type="email"
-            aria-label="Email"
-            className={`form-control ${
-              touched && !isEmailValid(form.email) ? "is-invalid" : ""
-            }`}
+            className={`form-control ${touched && !isEmailValid(form.email) ? 'is-invalid' : ''}`}
             value={form.email}
-            onChange={onChange("email")}
+            onChange={onChange('email')}
           />
           <div className="invalid-feedback">Email inválido</div>
         </div>
@@ -82,24 +73,17 @@ export default function Login() {
           <label className="form-label">Contraseña</label>
           <input
             type="password"
-            aria-label="Contraseña"
-            className={`form-control ${
-              touched && !isPwdValid(form.password) ? "is-invalid" : ""
-            }`}
+            className={`form-control ${touched && !isPwdValid(form.password) ? 'is-invalid' : ''}`}
             value={form.password}
-            onChange={onChange("password")}
+            onChange={onChange('password')}
           />
           <div className="invalid-feedback">Mínimo 6 caracteres</div>
         </div>
 
-        {error && (
-          <div role="alert" className="alert alert-danger">
-            {error}
-          </div>
-        )}
+        {error && <div className="alert alert-danger">{error}</div>}
 
         <button type="submit" className="btn btn-primary" disabled={loading}>
-          {loading ? "Cargando..." : "Ingresar"}
+          {loading ? 'Cargando...' : 'Ingresar'}
         </button>
       </form>
     </section>
