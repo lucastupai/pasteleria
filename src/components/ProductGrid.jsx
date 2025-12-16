@@ -7,21 +7,22 @@ export default function ProductGrid() {
   const [busqueda, setBusqueda] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // 🔗 IP DEL BACKEND
-  const API_BASE = "http://13.218.231.171:8082";
+  // ✅ Usar el proxy de Nginx: /api -> 127.0.0.1:8082
+  // ❌ NO usar http://13.218.231.171:8082 porque causa CORS
+  const API_BASE = "";
 
   useEffect(() => {
     fetch(`${API_BASE}/api/productos`)
-      .then(res => {
+      .then((res) => {
         if (!res.ok) throw new Error("Error al obtener productos");
         return res.json();
       })
-      .then(data => {
+      .then((data) => {
         setProductos(data);
         setFiltrados(data);
         setLoading(false);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error("Error al cargar productos:", err);
         setLoading(false);
       });
@@ -29,8 +30,8 @@ export default function ProductGrid() {
 
   // 🔎 Filtro por nombre
   useEffect(() => {
-    const resultado = productos.filter(p =>
-      p.nombre.toLowerCase().includes(busqueda.toLowerCase())
+    const resultado = productos.filter((p) =>
+      (p.nombre || "").toLowerCase().includes(busqueda.toLowerCase())
     );
     setFiltrados(resultado);
   }, [busqueda, productos]);
@@ -56,7 +57,7 @@ export default function ProductGrid() {
           <p className="text-muted">No se encontraron productos.</p>
         )}
 
-        {filtrados.map(p => (
+        {filtrados.map((p) => (
           <div key={p.id} className="col-12 col-sm-6 col-md-4 col-lg-3">
             <ProductCard
               id={p.id}
