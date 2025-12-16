@@ -9,7 +9,8 @@ export default function Login() {
   const isEmailValid = (v) => /\S+@\S+\.\S+/.test(v);
   const isPwdValid = (v) => v.length >= 6;
 
-  const API_BASE = 'http://3.90.161.208:8082';
+  // ✅ IP DEL BACKEND (IMPORTANTE)
+  const API_BASE = "http://13.218.231.171:8082";
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -36,10 +37,10 @@ export default function Login() {
         return;
       }
 
-      const data = await resp.json(); 
+      const data = await resp.json();
       // data = { token, username, rol }
 
-      // Guardamos la sesión
+      // ✅ Guardamos la sesión
       localStorage.setItem('token', data.token);
       localStorage.setItem('username', data.username);
       localStorage.setItem('rol', data.rol);
