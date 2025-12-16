@@ -6,7 +6,6 @@ export default function Home() {
 
   return (
     <section className="py-4">
-    <h1 style={{ color: 'red' }}>DEBUG LUCAS HOME NUEVO</h1>
     {/* Bloque de bienvenida */}
     <div className="mb-4">
         <h1 className="mb-2">
